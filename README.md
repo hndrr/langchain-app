@@ -1,4 +1,4 @@
-# lang-chain-app
+# LangChainApp
 
 React Native + Expo + LangChain.js
 - <https://reactnative.dev/>
