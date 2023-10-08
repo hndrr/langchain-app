@@ -10,7 +10,6 @@ import {
   Text,
   TextInput,
   View,
-  i,
 } from "react-native";
 import { useState } from "react";
 import { postChatMessage } from "./generateChatMessage";
