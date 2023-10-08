@@ -12,7 +12,7 @@ import {
   View,
 } from "react-native";
 import { useState } from "react";
-import { postChatMessage } from "./generateChatMessage";
+import { postChatMessage } from "./postChatMessage";
 
 export default function App() {
   const [text, setText] = useState<string>("");
