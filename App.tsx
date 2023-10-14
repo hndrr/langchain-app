@@ -40,10 +40,15 @@ export default function App() {
   return (
     <GluestackUIProvider config={config}>
       <VStack width="$full" height="$full" paddingHorizontal="$5">
-        <Heading size="lg" marginTop={60} paddingBottom={10}>
+        <Heading
+          size="lg"
+          marginTop={60}
+          paddingVertical={10}
+          textAlign="center"
+        >
           Simple Chatbot
         </Heading>
-        <ScrollView h="$80" w="$full" marginBottom={"$40"}>
+        <ScrollView h="$80" w="$full" marginBottom="$32">
           {outputs.length > 0 &&
             outputs.map((output, index) => {
               if (!output) {
@@ -112,8 +117,8 @@ export default function App() {
       <HStack
         space="md"
         position="absolute"
-        bottom="$4"
-        paddingBottom={"$20"}
+        bottom="$0"
+        paddingBottom="$16"
         width="$full"
         marginHorizontal={10}
         bg="$white"
