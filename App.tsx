@@ -1,6 +1,5 @@
 import "text-encoding-polyfill";
 import "react-native-url-polyfill/auto";
-import "web-streams-polyfill/dist/polyfill.min.js";
 import {
   Avatar,
   GluestackUIProvider,
@@ -18,7 +17,7 @@ import { Button, ButtonText, Text, ScrollView } from "@gluestack-ui/themed";
 import { GestureResponderEvent, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { postChatMessage } from "./postChatMessage";
-import { User } from "lucide-react-native";
+import { Bot, User } from "lucide-react-native";
 import { BaseMessage } from "langchain/schema";
 
 type Message = Pick<BaseMessage, "content" | "_getType">;
@@ -65,17 +64,23 @@ export default function App() {
                   justifyContent={isAI ? "flex-start" : "flex-end"}
                 >
                   {isAI && (
-                    <Avatar
-                      size="md"
-                      bgColor="$indigo300"
-                      borderColor="$indigo600"
-                      borderWidth={2}
-                    >
-                      <Icon as={User} color="$indigo600" size="xl" />
-                    </Avatar>
+                    <VStack alignContent="center">
+                      <Avatar
+                        size="md"
+                        bgColor="$indigo300"
+                        borderColor="$indigo600"
+                        borderWidth={2}
+                      >
+                        <Icon as={Bot} color="$indigo600" size="xl" />
+                      </Avatar>
+                      <Text fontSize="$md" textAlign="center">
+                        AI
+                      </Text>
+                    </VStack>
                   )}
                   <Text
                     width="auto"
+                    height="auto"
                     maxWidth={isUser ? "80%" : "$80"}
                     padding="$1"
                     textAlign={isUser ? "right" : "left"}
@@ -85,14 +90,19 @@ export default function App() {
                     {output.content}
                   </Text>
                   {isUser && (
-                    <Avatar
-                      size="md"
-                      bgColor="$amber300"
-                      borderColor="$amber600"
-                      borderWidth={2}
-                    >
-                      <Icon as={User} color="$amber600" size="xl" />
-                    </Avatar>
+                    <VStack>
+                      <Avatar
+                        size="md"
+                        bgColor="$amber300"
+                        borderColor="$amber600"
+                        borderWidth={2}
+                      >
+                        <Icon as={User} color="$amber600" size="xl" />
+                      </Avatar>
+                      <Text fontSize="$md" textAlign="center">
+                        User
+                      </Text>
+                    </VStack>
                   )}
                 </HStack>
               );
