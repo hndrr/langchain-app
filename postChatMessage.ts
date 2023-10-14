@@ -1,4 +1,5 @@
 // import { OPENAI_API_KEY } from "module:react-native-dotenv";
+import "web-streams-polyfill/dist/polyfill.min.js";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { BaseMessage, HumanMessage } from "langchain/schema";
 
