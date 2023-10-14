@@ -21,13 +21,20 @@ import { postChatMessage } from "./postChatMessage";
 import { User } from "lucide-react-native";
 import { BaseMessage } from "langchain/schema";
 
+type Message = Pick<BaseMessage, "content" | "_getType">;
+
 export default function App() {
   const [text, setText] = useState<string>("");
-  const [outputs, setOutputs] = useState<BaseMessage[]>([]);
+  const [outputs, setOutputs] = useState<Message[]>([]);
 
   const handleSubmit = async (event: GestureResponderEvent) => {
+    const userMessage: Message = {
+      content: text,
+      _getType: () => "human",
+    };
+    setOutputs([...outputs, userMessage]);
     const response = await postChatMessage(text);
-    setOutputs([...outputs, response as BaseMessage]);
+    setOutputs((prevOutputs) => [...prevOutputs, response as Message]);
     setText("");
   };
 
@@ -35,7 +42,7 @@ export default function App() {
     <GluestackUIProvider config={config}>
       <VStack width="$full" height="$full" paddingHorizontal="$5">
         <Heading size="lg" marginTop={60}>
-          Chatbot
+          Simple Chatbot
         </Heading>
         {outputs.length > 0 &&
           outputs.map((output, index) => {
@@ -54,6 +61,7 @@ export default function App() {
                 padding="$2"
                 borderRadius="$md"
                 bgColor="$gray100"
+                justifyContent={isAI ? "flex-start" : "flex-end"}
               >
                 {isAI && (
                   <Avatar
@@ -65,9 +73,27 @@ export default function App() {
                     <Icon as={User} color="$indigo600" size="xl" />
                   </Avatar>
                 )}
-                <Text width="$80" padding="$1">
-                  {output.name} {output.content}
+                <Text
+                  width="auto"
+                  maxWidth={isUser ? "80%" : "$80"}
+                  padding="$1"
+                  textAlign={isUser ? "right" : "left"}
+                  borderRadius="$md"
+                  borderWidth={1}
+                  borderColor="$gray300"
+                >
+                  {output.content}
                 </Text>
+                {isUser && (
+                  <Avatar
+                    size="md"
+                    bgColor="$amber300"
+                    borderColor="$amber600"
+                    borderWidth={2}
+                  >
+                    <Icon as={User} color="$amber600" size="xl" />
+                  </Avatar>
+                )}
               </HStack>
             );
           })}
@@ -102,18 +128,3 @@ export default function App() {
     </GluestackUIProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    borderWidth: 1,
-    width: "80%",
-    padding: 10,
-    marginVertical: 20,
-  },
-});
