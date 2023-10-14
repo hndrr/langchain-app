@@ -80,7 +80,6 @@ export default function App() {
                   textAlign={isUser ? "right" : "left"}
                   borderRadius="$md"
                   borderWidth={1}
-                  borderColor="$gray300"
                 >
                   {output.content}
                 </Text>
