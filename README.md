@@ -1,4 +1,4 @@
-# LangChain App
+# React Native LangChain App
 
 React Native + Expo + LangChain.js
 
