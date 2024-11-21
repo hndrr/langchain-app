@@ -1,5 +1,4 @@
-import "text-encoding-polyfill";
-import "react-native-url-polyfill/auto";
+import { config } from "@gluestack-ui/config";
 import {
   Avatar,
   GluestackUIProvider,
@@ -10,31 +9,56 @@ import {
   InputField,
   VStack,
 } from "@gluestack-ui/themed";
-import { config } from "@gluestack-ui/config";
+import "react-native-url-polyfill/auto";
+import "text-encoding-polyfill";
 
+import { Button, ButtonText, ScrollView, Text } from "@gluestack-ui/themed";
 import { StatusBar } from "expo-status-bar";
-import { Button, ButtonText, Text, ScrollView } from "@gluestack-ui/themed";
-import { GestureResponderEvent, StyleSheet } from "react-native";
-import React, { useState } from "react";
-import { postChatMessage } from "./postChatMessage";
-import { Bot, User } from "lucide-react-native";
 import { BaseMessage } from "langchain/schema";
+import { Bot, User } from "lucide-react-native";
+import React, { useState } from "react";
+import { GestureResponderEvent } from "react-native";
+import { postChatMessage } from "./postChatMessage_llama";
 
-type Message = Pick<BaseMessage, "content" | "_getType">;
+
+type Message = Pick<BaseMessage, "content"> & {
+  role: "ai" | "human";
+};
 
 export default function App() {
   const [text, setText] = useState<string>("");
   const [outputs, setOutputs] = useState<Message[]>([]);
 
   const handleSubmit = async (event: GestureResponderEvent) => {
+    event.preventDefault();
+    if (!text.trim()) return;
+
     const userMessage: Message = {
       content: text,
-      _getType: () => "human",
+      role: "human",
     };
-    setOutputs([...outputs, userMessage]);
-    const response = await postChatMessage(text);
-    setOutputs((prevOutputs) => [...prevOutputs, response as Message]);
-    setText("");
+
+    setOutputs((prevOutputs) => [...prevOutputs, userMessage]); // ユーザーのメッセージを追加
+
+    try {
+      const response = await postChatMessage(text);
+      console.log("response:", response);
+
+      const aiMessage: Message = {
+        content: response || "エラーが発生しました。",
+        role: "ai",
+      };
+
+      setOutputs((prevOutputs) => [...prevOutputs, aiMessage]); // AIからの応答を追加
+    } catch (error) {
+      console.error("Error in handleSubmit:", error);
+      setOutputs((prevOutputs) => [
+        ...prevOutputs,
+        { content: "エラーが発生しました。", role: "ai" },
+      ]);
+    } finally {
+      setText(""); // 入力フィールドをリセット
+    }
   };
 
   return (
@@ -55,9 +79,9 @@ export default function App() {
                 return <></>;
               }
 
-              const isAI = output._getType() === "ai";
-              const isUser = output._getType() === "human";
-
+              const isAI = output.role === "ai";
+              const isUser = output.role === "human";
+  
               return (
                 <HStack
                   space="md"

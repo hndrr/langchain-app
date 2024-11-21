@@ -1,7 +1,7 @@
 import { initLlama, loadLlamaModelInfo } from 'llama.rn';
 import "web-streams-polyfill/dist/polyfill.min.js";
 
-const modelPath = 'file:///Users/osamuhonda/workspace/langchain-app/model/gemma-2-baku-2b-it-Q4_K_M.gguf';
+const modelPath = process.env.EXPO_PUBLIC_LLAMA_MODEL_PATH!;
 let context: any;
 
 // Initialize Llama context
@@ -56,7 +56,7 @@ export const postChatMessage = async (text: string): Promise<string> => {
         n_predict: 100,
         stop: stopWords,
       },
-      (data) => {
+      (data: { token: any; }) => {
         // Optionally handle partial completions here
         const { token } = data;
         console.log('Partial token:', token);
