@@ -63,7 +63,13 @@ export const postChatMessage = async (text: string): Promise<string> => {
       }
     );
 
-    return msgResult?.text || 'No response';
+    // メッセージから  '<end_of_turn>','<eos>'　を削除
+    const response = msgResult?.text
+      .replace('<end_of_turn>', '')
+      .replace('<eos>', '')
+      .trim();
+
+    return response || 'No response';
   } catch (error) {
     console.error('Error in postChatMessage:', error);
     throw error;
