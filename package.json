@@ -4,8 +4,8 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject",
     "build:ios": "eas build -p ios",
@@ -19,6 +19,7 @@
     "expo": "~49.0.13",
     "expo-status-bar": "~1.6.0",
     "langchain": "^0.0.163",
+    "llama.rn": "^0.4.3",
     "lucide-react-native": "^0.287.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -28,7 +29,8 @@
     "react-native-web": "~0.19.6",
     "readable-stream": "^4.4.2",
     "text-encoding-polyfill": "^0.6.7",
-    "web-streams-polyfill": "^3.2.1"
+    "web-streams-polyfill": "^3.2.1",
+    "expo-splash-screen": "~0.20.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
