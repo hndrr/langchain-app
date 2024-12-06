@@ -18,8 +18,7 @@ import { BaseMessage } from "langchain/schema";
 import { Bot, User } from "lucide-react-native";
 import React, { useState } from "react";
 import { GestureResponderEvent } from "react-native";
-import { postChatMessage } from "./postChatMessage_llama";
-
+import { postChatMessage } from "./components/postChatMessage_llama";
 
 type Message = Pick<BaseMessage, "content"> & {
   role: "ai" | "human";
@@ -81,7 +80,7 @@ export default function App() {
 
               const isAI = output.role === "ai";
               const isUser = output.role === "human";
-  
+
               return (
                 <HStack
                   space="md"
